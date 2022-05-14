@@ -1,6 +1,6 @@
 // require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-truffle5");
-require('hardhat-deploy');
+require("hardhat-deploy");
 
 require("dotenv").config();
 
@@ -14,7 +14,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-const defaultNetwork = "ganache";
+const defaultNetwork = "polytest";
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -28,9 +28,9 @@ module.exports = {
     version: "0.8.13",
     settings: {
       optimizer: {
-        enabled: true
-      }
-    }
+        enabled: true,
+      },
+    },
   },
 
   networks: {
@@ -42,12 +42,12 @@ module.exports = {
       //   mnemonic: `${process.env.GOERLI_MNEMONIC}`
       // }
     },
-  
-    // polytest: {
-    //    url: `${process.env.MUMBAI_ALCHEMY_URL}`,// using alchemy instead of moralis. add your own URL in .env
-    //    gasPrice: 1000000000,
-    //    accounts: [`0x${process.env.MUMBAI_DEPLOYER_PRIV_KEY}`]
-    // },
+
+    polytest: {
+      url: `${process.env.MUMBAI_ALCHEMY_URL}`, // using alchemy instead of moralis. add your own URL in .env
+      gasPrice: 100000000000,
+      accounts: [`0x${process.env.MUMBAI_DEPLOYER_PRIV_KEY}`],
+    },
 
     // localhost: {
     //   url: "http://localhost:8545",
@@ -60,13 +60,12 @@ module.exports = {
     //   },
     // },
   },
-    namedAccounts: {
-      deployer: {
-        default: 0, // here this will by default take the first account as deployer
-      },
-  }
-}
-
+  namedAccounts: {
+    deployer: {
+      default: 0, // here this will by default take the first account as deployer
+    },
+  },
+};
 
 // require("dotenv").config();
 // const { utils } = require("ethers");
@@ -123,7 +122,6 @@ module.exports = {
 //   // An `example.env` has been provided in the Hardhat root. Copy it and rename it `.env`
 //   // Follow the directions, and uncomment the network you wish to deploy to.
 
-  
 //   networks: {
 
 //     hardhat: {
@@ -137,10 +135,10 @@ module.exports = {
 
 //     localhost: {
 //       url: "http://localhost:8545",
-//       /*      
+//       /*
 //         notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
 //         (you can put in a mnemonic here to set the deployer locally)
-      
+
 //       */
 //     },
 
@@ -172,27 +170,27 @@ module.exports = {
 
 //     rinkeby: {
 //       url: "https://rinkeby.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
-      
+
 //        //    url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXX/eth/rinkeby", // <---- YOUR MORALIS ID! (not limited to infura)
-      
+
 //       accounts: {
 //         mnemonic: mnemonic(),
 //       },
 //     },
 //     kovan: {
 //       url: "https://kovan.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
-    
+
 //       //    url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXX/eth/kovan", // <---- YOUR MORALIS ID! (not limited to infura)
-      
+
 //       accounts: {
 //         mnemonic: mnemonic(),
 //       },
 //     },
 //     mainnet: {
 //       url: "https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
-      
+
 //       //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/mainnet", // <---- YOUR MORALIS ID! (not limited to infura)
-        
+
 //       gasPrice: mainnetGwei*1000000000,
 //       accounts: {
 //         mnemonic: mnemonic(),
@@ -200,18 +198,18 @@ module.exports = {
 //     },
 //     ropsten: {
 //       url: "https://ropsten.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
-      
+
 //       //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/ropsten",// <---- YOUR MORALIS ID! (not limited to infura)
-      
+
 //       accounts: {
 //         mnemonic: mnemonic(),
 //       },
 //     },
 //     goerli: {
 //       url: "https://goerli.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", // <---- YOUR INFURA ID! (or it won't work)
-      
+
 //       //      url: "https://speedy-nodes-nyc.moralis.io/XXXXXXXXXXXXXXXXXXXXXXXXX/eth/goerli", // <---- YOUR MORALIS ID! (not limited to infura)
-      
+
 //       accounts: {
 //         mnemonic: mnemonic(),
 //       },
@@ -229,13 +227,13 @@ module.exports = {
 //       accounts: {
 //         mnemonic: mnemonic(),
 //       },
-//     },     
+//     },
 //     polytest: {
 //       url: `${process.env.MUMBAI_ALCHEMY_URL}`,// using alchemy instead of moralis. add your own URL in .env
 //       gasPrice: 1000000000,
 //       accounts: [`0x${process.env.MUMBAI_DEPLOYER_PRIV_KEY}`]
 //       },
-//     },    
+//     },
 
 //     matic: {
 //       url: "https://rpc-mainnet.maticvigil.com/",
@@ -680,4 +678,4 @@ module.exports = {
 //     debug(JSON.stringify(txRequest, null, 2));
 
 //     return send(fromSigner, txRequest);
-//   }); 
+//   });
