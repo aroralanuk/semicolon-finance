@@ -13,15 +13,15 @@ const cfaJSON = require("../artifacts/@superfluid-finance/ethereum-contracts/con
 const cfaABI = cfaJSON.abi;
 const cfaAddress = "0x49e565Ed1bdc17F3d220f72DF0857C26FA83F873";
 
-const tradeableCashflowJSON = require("../artifacts/contracts/TradeableCashflow.sol/TradeableCashflow.json");
+const TradableCashflowJSON = require("../artifacts/contracts/TradableCashflow.sol/TradableCashflow.json");
 
-const tradeableCashflowABI = tradeableCashflowJSON.abi;
+const TradableCashflowABI = TradableCashflowJSON.abi;
 
 // temporarily hardcode contract address and sender address
 // need to manually enter contract address and sender address here
-const deployedTradeableCashflow = require("../deployments/polytest/TradeableCashflow.json");
+const deployedTradableCashflow = require("../deployments/polytest/TradableCashflow.json");
 
-const tradeableCashflowAddress = deployedTradeableCashflow.address;
+const TradableCashflowAddress = deployedTradableCashflow.address;
 
 // your address here:
 const sender = process.env.SENDER_ADDRESS;
@@ -36,9 +36,9 @@ async function main() {
   const host = new web3.eth.Contract(hostABI, hostAddress);
   const cfa = new web3.eth.Contract(cfaABI, cfaAddress);
   // eslint-disable-next-line no-unused-vars
-  const tradeableCashflow = new web3.eth.Contract(
-    tradeableCashflowABI,
-    tradeableCashflowAddress
+  const TradableCashflow = new web3.eth.Contract(
+    TradableCashflowABI,
+    TradableCashflowAddress
   );
 
   const fDAIx = "0x5D8B4C2554aeB7e86F387B4d6c00Ac33499Ed01f";
@@ -47,14 +47,14 @@ async function main() {
   const nonce = await web3.eth.getTransactionCount(sender, "latest"); // nonce starts counting from 0
 
   // create flow by calling host directly in this function
-  // create flow from sender to tradeable cashflow address
+  // create flow from sender to Tradable cashflow address
   // pass in userData to the flow as a parameter
   async function startFlow() {
     const cfaTx = await cfa.methods
       .createFlow(
         fDAIx,
         // sender,
-        tradeableCashflowAddress,
+        TradableCashflowAddress,
         "3858024691358",
         "0x"
       )

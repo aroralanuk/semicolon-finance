@@ -1,6 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 
+import "hardhat/console.sol";
+
 import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";
 
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -12,7 +14,7 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 */
 
 
-contract TradeableCashflow is ERC721, RedirectAll {
+contract TradableCashflow is ERC721, RedirectAll {
 
   constructor (
     address owner,
@@ -30,8 +32,7 @@ contract TradeableCashflow is ERC721, RedirectAll {
       owner
      )
       {
-
-      _mint(owner, 1);
+        console.log("Minting erc721");
   }
 
   //now I will insert a nice little hook in the _transfer, including the RedirectAll function I need

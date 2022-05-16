@@ -171,7 +171,7 @@ contract RedirectAll is SuperAppBase {
 
         //set userData variable to decoded value
         //for now, this value is hardcoded as a string - this will be made clear in flow creation scripts within the tutorial
-        //this string will serve as a message on an 'NFT billboard' when a flow is created with recipient = tradeableCashflow
+        //this string will serve as a message on an 'NFT billboard' when a flow is created with recipient = TradableCashflow
         //it will be displayed on a front end for assistance in userData explanation
         userData = abi.decode(decompiledContext.userData, (string));
         
