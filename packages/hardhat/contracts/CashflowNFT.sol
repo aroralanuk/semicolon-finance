@@ -14,25 +14,27 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 */
 
 
-contract TradableCashflow is ERC721, RedirectAll {
+contract CashflowNFT is ERC721 {
 
-  constructor (
-    address owner,
-    string memory _name,
-    string memory _symbol,
+  constructor (string memory _name, string memory _symbol) ERC721(_name, _symbol) {}
+  RedirectAll[] public cashflows;
+
+  function mintWithFlow (
+    uint256 tokenId,
+    address recipient,
     ISuperfluid host,
     IConstantFlowAgreementV1 cfa,
     ISuperToken acceptedToken
-  )
-    ERC721 ( _name, _symbol )
-    RedirectAll (
-      host,
-      cfa,
-      acceptedToken,
-      owner
-     )
+
+  ) public 
       {
-        _mint(owner, 1);
+        _mint(recipient, 1);
+        cashflows[tokenId] = new RedirectAll(
+          host, 
+          cfa,
+          acceptedToken,
+          recipient
+        );
         console.log("Minting erc721");
   }
 
@@ -40,8 +42,8 @@ contract TradableCashflow is ERC721, RedirectAll {
   function _beforeTokenTransfer(
     address /*from*/,
     address to,
-    uint256 /*tokenId*/
+    uint256 tokenId
   ) internal override {
-      _changeReceiver(to);
+      cashflows[tokenId]._changeReceiver(to);
   }
 }
