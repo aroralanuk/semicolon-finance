@@ -8,6 +8,7 @@ const deploySuperToken = require("@superfluid-finance/ethereum-contracts/scripts
 
 const SuperfluidSDK = require("@superfluid-finance/js-sdk");
 const TradableCashflow = artifacts.require("TradableCashflow");
+const Factory = artifacts.require("Factory");
 
 const traveler = require("ganache-time-traveler");
 const TEST_TRAVEL_TIME = 3600 * 2; // 1 hours
@@ -23,7 +24,9 @@ contract("TradableCashflow", (accounts) => {
   let sf;
   let dai;
   let daix;
+  let factory;
   let app;
+
   const u = {}; // object with all users
   const aliases = {};
 
@@ -84,8 +87,11 @@ contract("TradableCashflow", (accounts) => {
     console.log(sf.host.address);
     console.log(sf.agreements.cfa.address);
     console.log(daix.address);
+
+    // factory = await Factory.new("Rari contributor badge", "RARI");
+    // factory.mintNFT
     app = await TradableCashflow.new(
-      //first param is owner of option
+      // first param is owner of option
       u.admin.address,
       "NFTBillboard",
       "NFTBILL",

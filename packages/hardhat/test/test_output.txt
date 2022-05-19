@@ -1,6 +1,4 @@
 
-Compiling 54 files with 0.8.13
-Compilation finished successfully
 
 
   Contract: TradableCashflow
@@ -196,7 +194,7 @@ Minting erc721
 Balance of  App
 DAIx:  0
 Alice upgrades many DAIx: started
-Alice upgrades many DAIx: done, gas used 121130, gas price 2.505030166 Gwei
+Alice upgrades many DAIx: done, gas used 121130, gas price 2.505025405 Gwei
 Balance of  Alice
 DAIx:  100000000000000000000000000
 Balance of  Alice
@@ -205,32 +203,23 @@ Balance of  Admin
 DAIx:  0
 Balance of  App
 DAIx:  0
-Contract Owner:  Admin  =  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-Create flow from 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 to 0x09635F643e140090A9A8Dcd712eD6285858ceBef at 1000000000000000 for 0x1f65B7b9b3ADB4354fF76fD0582bB6b0d046a41c ...
-Flow created.
-go forward in time
-Balance of  App
-DAIx:  0
-Contract Owner:  Admin  =  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-User logs:
-user		tokens		netflow
-Admin		7.20000		0.00100
-        Alice		99999985.60000		-0.00100
-        App		0.00000		0.00000
-        
-go forward in time
-Balance of  App
-DAIx:  0
-Contract Owner:  Admin  =  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-User logs:
-user		tokens		netflow
-Admin		14.40000		0.00100
-        Alice		99999978.40000		-0.00100
-        App		0.00000		0.00000
-        
-latest userData value: HODL BTC
-      ✓ Case #1 - Alice sends a flow with userData (5658ms)
+      1) Case #1 - Alice sends a flow with userData
 
 
-  1 passing (13s)
+  0 passing (22s)
+  1 failing
+
+  1) Contract: TradableCashflow
+       Testing the billboard contract
+         Case #1 - Alice sends a flow with userData:
+     Error: VM Exception while processing transaction: reverted with reason string 'ERC721: owner query for nonexistent token'
+      at TradableCashflow.getApproved (@openzeppelin/contracts/token/ERC721/ERC721.sol:128)
+      at TradableCashflow.ownerOf (@openzeppelin/contracts/token/ERC721/ERC721.sol:70)
+      at TruffleContract.ownerOf (node_modules/@nomiclabs/truffle-contract/lib/execute.js:121:26)
+      at checkOwner (test/NFTBillboard.test.js:161:29)
+      at appStatus (test/NFTBillboard.test.js:157:11)
+      at processTicksAndRejections (internal/process/task_queues.js:95:5)
+      at Context.<anonymous> (test/NFTBillboard.test.js:191:7)
+
+
 

@@ -32,6 +32,7 @@ contract TradableCashflow is ERC721, RedirectAll {
       owner
      )
       {
+        _mint(owner, 1);
         console.log("Minting erc721");
   }
 
