@@ -28,13 +28,13 @@ contract CashflowNFT is ERC721 {
 
   ) public 
       {
-        _mint(recipient, 1);
         cashflows[tokenId] = new RedirectAll(
           host, 
           cfa,
           acceptedToken,
           recipient
         );
+        _mint(recipient, tokenId);
         console.log("Minting erc721");
   }
 

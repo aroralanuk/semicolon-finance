@@ -1,5 +1,5 @@
 // const { expect } = require("chai");
-// const { ethers } = require("hardhat");
+const { ethers, web3 } = require("hardhat");
 const { web3tx, toWad, wad4human } = require("@decentral.ee/web3-helpers");
 
 const deployFramework = require("@superfluid-finance/ethereum-contracts/scripts/deploy-framework");
@@ -13,7 +13,7 @@ const Factory = artifacts.require("Factory");
 const traveler = require("ganache-time-traveler");
 const TEST_TRAVEL_TIME = 3600 * 2; // 1 hours
 
-contract("CashflowNFT", (accounts) => {
+contract("Factory", (accounts) => {
   const errorHandler = (err) => {
     if (err) throw err;
   };
@@ -89,23 +89,13 @@ contract("CashflowNFT", (accounts) => {
     console.log(daix.address);
 
     factory = await Factory.new("Rari contributor badge", "RARI");
-    // factory.dummy()
-    // app = await CashflowNFT.new(
-    //   // first param is owner of option
-    //   u.admin.address,
-    //   "NFTBillboard",
-    //   "NFTBILL",
-    //   sf.host.address,
-    //   sf.agreements.cfa.address,
-    //   daix.address
-    // );
 
     // u.app = sf.user({ address: app.address, token: daix.address });
     // u.app.alias = "App";
 
-    // u.factory = sf.user({ address: factory.address, token: daix.address });
-    // u.factory.alias = "Factory";
-    // await checkBalance(u.app);
+    u.factory = sf.user({ address: factory.address, token: daix.address });
+    u.factory.alias = "Factory";
+    await checkBalance(u.factory);
   });
 
   async function checkBalance(user) {
@@ -120,7 +110,8 @@ contract("CashflowNFT", (accounts) => {
   }
 
   async function dummy() {
-    await web3tx(factory.dummy, "dummy")({ from: accounts[0] });
+    const initTx = await factory.dummy();
+    // console.log("WORKING!!");
   }
 
   // const initTx = await factory.methods
@@ -138,7 +129,11 @@ contract("CashflowNFT", (accounts) => {
   //   IConstantFlowAgreementV1 cfa,
   //   ISuperToken acceptedToken
   // )
-  async function mintNFT(user, host, cfa, acceptedToken) {}
+  async function mintNFT(user, host, cfa, acceptedToken) {
+    const initTx = await factory.mintNFT(user, host, cfa, acceptedToken);
+
+    console.log(initTx);
+  }
 
   async function upgrade(accounts) {
     for (let i = 0; i < accounts.length; ++i) {
@@ -208,18 +203,23 @@ contract("CashflowNFT", (accounts) => {
 
   describe("Testing the billboard contract", async function () {
     it("Case #1 - Alice sends a flow with userData", async () => {
-      const { alice } = u;
-      await dummy();
-      // const appInitialBalance = await daix.balanceOf(app.address);
-      // await upgrade([alice]);
-      // await checkBalances([alice, u.admin]);
-      // await appStatus();
-      // await logUsers();
-      // await alice.flow({
-      //   flowRate: toWad(0.001).toString(),
-      //   recipient: u.app,
-      //   userData: web3.eth.abi.encodeParameter("string", "HODL BTC"),
-      // });
+      const { alice, admin } = u;
+      await mintNFT(
+        admin.address,
+        sf.host.address,
+        sf.agreements.cfa.address,
+        daix.address
+      );
+      const appInitialBalance = await daix.balanceOf(factory.address);
+      await upgrade([alice]);
+      await checkBalances([alice, u.admin]);
+      await appStatus();
+      await logUsers();
+      await alice.flow({
+        flowRate: toWad(0.001).toString(),
+        recipient: u.factory,
+        userData: web3.eth.abi.encodeParameter("string", "HODL MATIC"),
+      });
       // console.log("go forward in time");
       // await traveler.advanceTimeAndBlock(TEST_TRAVEL_TIME);
       // await appStatus();

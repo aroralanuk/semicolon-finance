@@ -19,6 +19,7 @@ contract Factory is Ownable {
 
   CashflowNFT public flowNFT;
 
+  event NFTCreated(address indexed owner, uint256 indexed tokenId);
 
   constructor(string memory _name, string memory _symbol) {
       flowNFT = new CashflowNFT(_name, _symbol);
@@ -45,7 +46,9 @@ contract Factory is Ownable {
           cfa,
           acceptedToken
       );
+      _tokenIds.increment();
 
+      emit NFTCreated(msg.sender, tokenId);
       return tokenId;
     }
 }
