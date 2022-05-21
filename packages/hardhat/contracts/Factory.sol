@@ -11,15 +11,23 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "./CashflowNFT.sol";
 import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";
 
+import "hardhat/console.sol";
+
 contract Factory is Ownable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
 
   CashflowNFT public flowNFT;
 
+
   constructor(string memory _name, string memory _symbol) {
-      flowNFT = CashflowNFT(_name, _symbol);
+      flowNFT = new CashflowNFT(_name, _symbol);
   }
+
+    function dummy() public returns (uint) {
+      console.log("What a dummy");
+      return 1;
+    }
 
     function mintNFT(
       address recipient,
@@ -29,7 +37,7 @@ contract Factory is Ownable {
     )
     public returns (uint256) {
 
-      uint256 tokenId = _tokenIds.get();
+      uint256 tokenId = _tokenIds.current();
       flowNFT.mintWithFlow(
           tokenId,
           recipient,

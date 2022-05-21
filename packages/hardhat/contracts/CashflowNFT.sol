@@ -44,6 +44,6 @@ contract CashflowNFT is ERC721 {
     address to,
     uint256 tokenId
   ) internal override {
-      cashflows[tokenId]._changeReceiver(to);
+      cashflows[tokenId].changeReceiver(to);
   }
 }

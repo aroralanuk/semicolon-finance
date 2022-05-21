@@ -125,7 +125,7 @@ contract RedirectAll is SuperAppBase {
     }
 
     // @dev Change the Receiver of the total flow
-    function _changeReceiver( address newReceiver ) internal {
+    function changeReceiver( address newReceiver ) public {
         require(newReceiver != address(0), "New receiver is zero address");
         // @dev because our app is registered as final, we can't take downstream apps
         require(!_host.isApp(ISuperApp(newReceiver)), "New receiver can not be a superApp");

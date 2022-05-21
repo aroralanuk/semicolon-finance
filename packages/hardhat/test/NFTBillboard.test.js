@@ -7,13 +7,13 @@ const deployTestToken = require("@superfluid-finance/ethereum-contracts/scripts/
 const deploySuperToken = require("@superfluid-finance/ethereum-contracts/scripts/deploy-super-token");
 
 const SuperfluidSDK = require("@superfluid-finance/js-sdk");
-const TradableCashflow = artifacts.require("TradableCashflow");
+const CashflowNFT = artifacts.require("CashflowNFT");
 const Factory = artifacts.require("Factory");
 
 const traveler = require("ganache-time-traveler");
 const TEST_TRAVEL_TIME = 3600 * 2; // 1 hours
 
-contract("TradableCashflow", (accounts) => {
+contract("CashflowNFT", (accounts) => {
   const errorHandler = (err) => {
     if (err) throw err;
   };
@@ -88,21 +88,24 @@ contract("TradableCashflow", (accounts) => {
     console.log(sf.agreements.cfa.address);
     console.log(daix.address);
 
-    // factory = await Factory.new("Rari contributor badge", "RARI");
-    // factory.mintNFT
-    app = await TradableCashflow.new(
-      // first param is owner of option
-      u.admin.address,
-      "NFTBillboard",
-      "NFTBILL",
-      sf.host.address,
-      sf.agreements.cfa.address,
-      daix.address
-    );
+    factory = await Factory.new("Rari contributor badge", "RARI");
+    // factory.dummy()
+    // app = await CashflowNFT.new(
+    //   // first param is owner of option
+    //   u.admin.address,
+    //   "NFTBillboard",
+    //   "NFTBILL",
+    //   sf.host.address,
+    //   sf.agreements.cfa.address,
+    //   daix.address
+    // );
 
-    u.app = sf.user({ address: app.address, token: daix.address });
-    u.app.alias = "App";
-    await checkBalance(u.app);
+    // u.app = sf.user({ address: app.address, token: daix.address });
+    // u.app.alias = "App";
+
+    // u.factory = sf.user({ address: factory.address, token: daix.address });
+    // u.factory.alias = "Factory";
+    // await checkBalance(u.app);
   });
 
   async function checkBalance(user) {
@@ -115,6 +118,27 @@ contract("TradableCashflow", (accounts) => {
       await checkBalance(accounts[i]);
     }
   }
+
+  async function dummy() {
+    await web3tx(factory.dummy, "dummy")({ from: accounts[0] });
+  }
+
+  // const initTx = await factory.methods
+  //   .mintNFT(owner, hostAddress, cfaAddress, fDAIx)
+  //   .call(function (err, res) {
+  //     if (err) {
+  //       console.log("ERROR", err.message);
+  //     } else {
+  //       console.log(res.message);
+  //     }
+  //   });
+  //     function mintNFT(
+  //   address recipient,
+  //   ISuperfluid host,
+  //   IConstantFlowAgreementV1 cfa,
+  //   ISuperToken acceptedToken
+  // )
+  async function mintNFT(user, host, cfa, acceptedToken) {}
 
   async function upgrade(accounts) {
     for (let i = 0; i < accounts.length; ++i) {
@@ -185,39 +209,40 @@ contract("TradableCashflow", (accounts) => {
   describe("Testing the billboard contract", async function () {
     it("Case #1 - Alice sends a flow with userData", async () => {
       const { alice } = u;
-      const appInitialBalance = await daix.balanceOf(app.address);
-      await upgrade([alice]);
-      await checkBalances([alice, u.admin]);
-      await appStatus();
-      await logUsers();
-      await alice.flow({
-        flowRate: toWad(0.001).toString(),
-        recipient: u.app,
-        userData: web3.eth.abi.encodeParameter("string", "HODL BTC"),
-      });
-      console.log("go forward in time");
-      await traveler.advanceTimeAndBlock(TEST_TRAVEL_TIME);
-      await appStatus();
-      await logUsers();
+      await dummy();
+      // const appInitialBalance = await daix.balanceOf(app.address);
+      // await upgrade([alice]);
+      // await checkBalances([alice, u.admin]);
+      // await appStatus();
+      // await logUsers();
+      // await alice.flow({
+      //   flowRate: toWad(0.001).toString(),
+      //   recipient: u.app,
+      //   userData: web3.eth.abi.encodeParameter("string", "HODL BTC"),
+      // });
+      // console.log("go forward in time");
+      // await traveler.advanceTimeAndBlock(TEST_TRAVEL_TIME);
+      // await appStatus();
+      // await logUsers();
 
-      console.log("go forward in time");
-      await traveler.advanceTimeAndBlock(TEST_TRAVEL_TIME);
-      await appStatus();
-      await logUsers();
-      const appFinalBalance = await daix.balanceOf(app.address);
-      const userData = await app.userData();
-      console.log("latest userData value: " + userData);
-      assert.equal(
-        (await u.app.details()).cfa.netFlow,
-        0,
-        "App flowRate not zero"
-      );
-      assert.equal(
-        appInitialBalance.toString(),
-        appFinalBalance.toString(),
-        "balances aren't equal"
-      );
-      assert.equal(userData, "HODL BTC", "user data value incorrect");
+      // console.log("go forward in time");
+      // await traveler.advanceTimeAndBlock(TEST_TRAVEL_TIME);
+      // await appStatus();
+      // await logUsers();
+      // const appFinalBalance = await daix.balanceOf(app.address);
+      // const userData = await app.userData();
+      // console.log("latest userData value: " + userData);
+      // assert.equal(
+      //   (await u.app.details()).cfa.netFlow,
+      //   0,
+      //   "App flowRate not zero"
+      // );
+      // assert.equal(
+      //   appInitialBalance.toString(),
+      //   appFinalBalance.toString(),
+      //   "balances aren't equal"
+      // );
+      // assert.equal(userData, "HODL BTC", "user data value incorrect");
     }).timeout(100000);
     // it("Case #2 - Alice upates flows and userData", async () => {
     //   const { alice } = u;
