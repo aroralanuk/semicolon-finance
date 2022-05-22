@@ -14,20 +14,40 @@ import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from ".
 import "hardhat/console.sol";
 
 contract Factory is Ownable {
-  using Counters for Counters.Counter;
-  Counters.Counter private _tokenIds;
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
-  CashflowNFT public flowNFT;
+    ISuperfluid public _host; // host
+    IConstantFlowAgreementV1 private _cfa; 
+    ISuperToken private _acceptedToken;
 
-  event NFTCreated(address indexed owner, uint256 indexed tokenId);
+    CashflowNFT public flowNFT;
 
-  constructor(string memory _name, string memory _symbol) {
-      flowNFT = new CashflowNFT(_name, _symbol);
-  }
+    event NFTCreated(address indexed owner, uint256 indexed tokenId);
 
-    function dummy() public returns (uint) {
+    constructor(string memory _name, string memory _symbol) {
+        flowNFT = new CashflowNFT(_name, _symbol);
+    }
+
+    function setHost(ISuperfluid host) public {
+      _host = host;
+    }
+
+    function setCFA(IConstantFlowAgreementV1 cfa) public {
+      _cfa = cfa;
+    }
+
+    function setAcceptedToken(ISuperToken acceptedToken) public {
+      _acceptedToken = acceptedToken;
+    }
+
+    function dummy() public view returns (uint) {
       console.log("What a dummy");
       return 1;
+    }
+
+    function getCashflow(uint256 tokenId) public view returns (RedirectAll) {
+      return flowNFT.cashflows(tokenId);
     }
 
     function mintNFT(
@@ -51,4 +71,11 @@ contract Factory is Ownable {
       emit NFTCreated(msg.sender, tokenId);
       return tokenId;
     }
+
+    function addContributor (address contributor) public {
+      mintNFT(contributor, _host, _cfa, _acceptedToken);
+    }
+
+
+
 }

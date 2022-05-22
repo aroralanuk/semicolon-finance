@@ -90,8 +90,8 @@ contract("Factory", (accounts) => {
 
     factory = await Factory.new("Rari contributor badge", "RARI");
 
-    // u.app = sf.user({ address: app.address, token: daix.address });
-    // u.app.alias = "App";
+    u.app = sf.user({ address: factory.address, token: daix.address });
+    u.app.alias = "App";
 
     u.factory = sf.user({ address: factory.address, token: daix.address });
     u.factory.alias = "Factory";
@@ -111,6 +111,14 @@ contract("Factory", (accounts) => {
 
   async function dummy() {
     const initTx = await factory.dummy();
+    // console.log("WORKING!!");
+  }
+
+  async function getRedirectAll(flowIndex) {
+    app = await factory.getCashflow(flowIndex);
+    console.log("ADDY:", app);
+    // const flowAddress = await factory.getCashflowAddress(flowIndex);
+    // u.app = sf.user({ address: flowAddress, token: daix.address });
     // console.log("WORKING!!");
   }
 
@@ -213,13 +221,14 @@ contract("Factory", (accounts) => {
       const appInitialBalance = await daix.balanceOf(factory.address);
       await upgrade([alice]);
       await checkBalances([alice, u.admin]);
+      await getRedirectAll(0);
       await appStatus();
-      await logUsers();
-      await alice.flow({
-        flowRate: toWad(0.001).toString(),
-        recipient: u.factory,
-        userData: web3.eth.abi.encodeParameter("string", "HODL MATIC"),
-      });
+      // await logUsers();
+      // await alice.flow({
+      //   flowRate: toWad(0.001).toString(),
+      //   recipient: u.factory,
+      //   userData: web3.eth.abi.encodeParameter("string", "HODL MATIC"),
+      // });
       // console.log("go forward in time");
       // await traveler.advanceTimeAndBlock(TEST_TRAVEL_TIME);
       // await appStatus();

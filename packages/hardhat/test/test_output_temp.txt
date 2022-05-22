@@ -196,22 +196,22 @@ Balance of  Factory
 DAIx:  0
 Minting erc721
 {
-  tx: '0x9cced83271bf7471445b00f9a4157e2f55fa5baf00aee0b92ce95a4ca1a93727',
+  tx: '0x36b16b7db65c739280b1736479b2e5bd3408fcaafdf4136783a5327c0fe11e06',
   receipt: {
-    transactionHash: '0x9cced83271bf7471445b00f9a4157e2f55fa5baf00aee0b92ce95a4ca1a93727',
+    transactionHash: '0x36b16b7db65c739280b1736479b2e5bd3408fcaafdf4136783a5327c0fe11e06',
     transactionIndex: 0,
-    blockHash: '0x092476383220e41b2d5bc55f0d973bacfae142bf348630996485965c9fd1035b',
+    blockHash: '0xf3e8568ec93323d492e4ac4f2c1b03e704b7218f4bdc651e8741ebd05109f2a5',
     blockNumber: 42,
     from: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
     to: '0x09635f643e140090a9a8dcd712ed6285858cebef',
-    cumulativeGasUsed: 1743409,
-    gasUsed: 1743409,
+    cumulativeGasUsed: 1743387,
+    gasUsed: 1743387,
     contractAddress: null,
     logs: [ [Object] ],
     logsBloom: '0x00000000000000000000000000000100000000000000000000000000000000010000000000000000200000000000011000000000000000000000000000200000000000000000000000000008000000000000001010000000010000000000000000000000020000002010000100000800000000000000000000000010000000000000000000000000000000000000000000000000010000804000008002000000000000000000000000000000000000000000000000000000000000000000000000000002000000200000000000000000200000002000000000000000000020000000000000000000000000000000000000000000000000000000000020000000',
     type: '0x0',
     status: true,
-    effectiveGasPrice: '0x3be7f63d',
+    effectiveGasPrice: '0x3be80be9',
     rawLogs: [ [Object], [Object], [Object] ]
   },
   logs: [
@@ -219,37 +219,38 @@ Minting erc721
       removed: false,
       logIndex: 2,
       transactionIndex: 0,
-      transactionHash: '0x9cced83271bf7471445b00f9a4157e2f55fa5baf00aee0b92ce95a4ca1a93727',
-      blockHash: '0x092476383220e41b2d5bc55f0d973bacfae142bf348630996485965c9fd1035b',
+      transactionHash: '0x36b16b7db65c739280b1736479b2e5bd3408fcaafdf4136783a5327c0fe11e06',
+      blockHash: '0xf3e8568ec93323d492e4ac4f2c1b03e704b7218f4bdc651e8741ebd05109f2a5',
       blockNumber: 42,
       address: '0x09635F643e140090A9A8Dcd712eD6285858ceBef',
-      id: 'log_57f00557',
+      id: 'log_3c12a858',
       event: 'NFTCreated',
       args: [Result]
     }
   ]
 }
 Alice upgrades many DAIx: started
-Alice upgrades many DAIx: done, gas used 121130, gas price 2.504498877 Gwei
+Alice upgrades many DAIx: done, gas used 121130, gas price 2.504503811 Gwei
 Balance of  Alice
 DAIx:  100000000000000000000000000
 Balance of  Alice
 DAIx:  100000000000000000000000000
 Balance of  Admin
 DAIx:  0
+ADDY: 0x487c16e3228C9d6BE29e4bF400Cd21bE2E993BBd
       1) Case #1 - Alice sends a flow with userData
 
 
-  0 passing (10s)
+  0 passing (6s)
   1 failing
 
   1) Contract: Factory
        Testing the billboard contract
          Case #1 - Alice sends a flow with userData:
-     TypeError: Cannot read property 'address' of undefined
-      at appStatus (test/NFTBillboard.test.js:171:45)
-      at Context.<anonymous> (test/NFTBillboard.test.js:216:13)
+     Error: invalid address (argument="address", value=undefined, code=INVALID_ARGUMENT, version=address/5.6.0) (argument="app", value=undefined, code=INVALID_ARGUMENT, version=abi/5.0.7)
+      at appStatus (test/NFTBillboard.test.js:180:36)
       at processTicksAndRejections (internal/process/task_queues.js:95:5)
+      at Context.<anonymous> (test/NFTBillboard.test.js:225:7)
 
 
 
