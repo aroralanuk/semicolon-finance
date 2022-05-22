@@ -244,8 +244,8 @@ function App() {
   });
 
   //two new variables that we'll use
-  const message = useContractReader(readContracts, "TradeableCashflow", "userData")
-  const billboardOwner = useContractReader(readContracts, "TradeableCashflow", "_receiver")
+  const message = useContractReader(readContracts, "TradableCashflow", "userData")
+  const billboardOwner = useContractReader(readContracts, "TradableCashflow", "_receiver")
 
   // Then read your DAI balance like:
   const myMainnetDAIBalance = useContractReader(mainnetContracts, "DAI", "balanceOf", [
@@ -536,7 +536,7 @@ function App() {
             */}
 
             {/* <Contract
-              name="TradeableCashflow"
+              name="TradableCashflow"
               signer={userSigner}
               provider={localProvider}
               address={address}

@@ -36,7 +36,7 @@ export default function NFTBillboard({
       
       Billboard Contract Address:
         <Address
-          address={readContracts && readContracts.TradeableCashflow ? readContracts.TradeableCashflow.address : null}
+          address={readContracts && readContracts.TradableCashflow ? readContracts.TradableCashflow.address : null}
           ensProvider={mainnetProvider}
           fontSize={16}
         />

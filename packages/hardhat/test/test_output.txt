@@ -1,0 +1,225 @@
+
+
+
+  Contract: TradableCashflow
+truffle detected false
+use truffle native environment (isTruffle) false
+protocol release version: test
+======== Deploying superfluid framework ========
+reset superfluid framework:  false
+network Type:  private
+network ID:  31337
+chain ID:  31337
+truffle detected false
+use truffle native environment (isTruffle) false
+protocol release version: test
+Checking ERC1820 deployment at 0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24
+Deploying...
+Step 1: send ETH
+Step 2: send signed transaction
+Deployment done.
+Using @superfluid-finance/js-sdk in a non-native Truffle environment.
+                Peer dependency @truffle/contract is required.
+Set default from address to 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+Resolver.new: started
+Resolver.new: done, gas used 851574, gas price 3.17383077 Gwei
+Resolver address 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+TestGovernance.test address 0x0000000000000000000000000000000000000000
+TestGovernance needs new deployment.
+TestGovernance.new: started
+TestGovernance.new: done, gas used 1465900, gas price 3.094383731 Gwei
+TestGovernance.test deployed to 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+Resolver set TestGovernance.test: started
+Resolver set TestGovernance.test: done, gas used 48926, gas price 3.027346658 Gwei
+SuperfluidLoader-v1 address 0x0000000000000000000000000000000000000000
+SuperfluidLoader needs new deployment.
+SuperfluidLoader.new: started
+SuperfluidLoader.new: done, gas used 298467, gas price 2.961643334 Gwei
+SuperfluidLoader-v1 deployed to 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+Resolver set SuperfluidLoader-v1: started
+Resolver set SuperfluidLoader-v1: done, gas used 48914, gas price 2.905086129 Gwei
+Superfluid.test address 0x0000000000000000000000000000000000000000
+Superfluid needs new deployment.
+SuperfluidLogic.new: started
+SuperfluidLogic.new: done, gas used 4747980, gas price 2.854615483 Gwei
+Superfluid new code address 0x0165878A594ca255338adfa4d48449f69242Eb8F
+Create Superfluid proxy: started
+Create Superfluid proxy: done, gas used 172747, gas price 2.824319442 Gwei
+proxy.initializeProxy: started
+proxy.initializeProxy: done, gas used 43888, gas price 2.784246389 Gwei
+Superfluid.initialize: started
+Superfluid.initialize: done, gas used 49842, gas price 2.748819549 Gwei
+Superfluid.test deployed to 0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
+Resolver set Superfluid.test: started
+Resolver set Superfluid.test: done, gas used 48878, gas price 2.717820453 Gwei
+governance.initialize: started
+governance.initialize: done, gas used 146938, gas price 2.690681619 Gwei
+ConstantFlowAgreementV1.new: started
+ConstantFlowAgreementV1.new: done, gas used 4723713, gas price 2.667079904 Gwei
+New ConstantFlowAgreementV1 address 0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0
+Governance registers CFA: started
+Governance registers CFA: done, gas used 274340, gas price 2.652771896 Gwei
+SlotsBitmapLibrary.new: started
+SlotsBitmapLibrary.new: done, gas used 628241, gas price 2.634024672 Gwei
+SlotsBitmapLibrary.new: started
+SlotsBitmapLibrary.new: done, gas used 628241, gas price 2.617973253 Gwei
+InstantDistributionAgreementV1.new: started
+InstantDistributionAgreementV1.new: done, gas used 4765717, gas price 2.603844227 Gwei
+New InstantDistributionAgreementV1 address 0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1
+Governance registers IDA: started
+Governance registers IDA: done, gas used 257196, gas price 2.594987801 Gwei
+Superfluid has the same logic code, no deployment needed.
+ConstantFlowAgreementV1 has the same logic code, no deployment needed.
+InstantDistributionAgreementV1 has the same logic code, no deployment needed.
+SuperTokenFactory logic code has changed
+SuperTokenFactoryHelperLogic.new: started
+SuperTokenFactoryHelperLogic.new: done, gas used 4138899, gas price 2.583317914 Gwei
+SuperTokenFactoryLogic.new: started
+SuperTokenFactoryLogic.new: done, gas used 1087390, gas price 2.575776879 Gwei
+SuperTokenFactory new logic code address 0x3Aa5ebB10DC797CAC828524e59A333d0A371443c
+Governance Admin Type: Direct Ownership (default)
+Executing governance action...
+Governance action executed.
+======== Superfluid framework deployed ========
+=============== TEST ENVIRONMENT RESOLVER ======================
+export RESOLVER_ADDRESS=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+    Testing the billboard contract
+truffle detected false
+Colon arguments [ 'fDAI' ]
+use truffle native environment (isTruffle) false
+protocol release version: test
+======== Deploying test token ========
+Token symbol fDAI
+reset token:  false
+network Type:  private
+network ID:  31337
+chain ID:  31337
+Using @superfluid-finance/js-sdk in a non-native Truffle environment.
+                Peer dependency @truffle/contract is required.
+Set default from address to 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+Resolver address 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+TestToken.new: started
+TestToken.new: done, gas used 708026, gas price 2.560841797 Gwei
+Resolver set tokens.fDAI: started
+Resolver set tokens.fDAI: done, gas used 48830, gas price 2.553595553 Gwei
+Token fDAI address 0x59b670e9fA9D0A427751Af201D676719a970857b
+======== Test token deployed ========
+truffle detected false
+Colon arguments [ 'fDAI' ]
+use truffle native environment (isTruffle) false
+protocol release version: test
+======== Deploying super token ========
+reset token:  false
+protocol release version: test
+Initializing Superfluid Framework...
+version test
+networkType private
+networkId 31337
+chainId 31337
+Using @superfluid-finance/js-sdk in a non-native Truffle environment.
+                Peer dependency @truffle/contract is required.
+Set default from address to 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+Resolver at 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+Superfluid Loader v1 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+Loading framework with release version test
+Superfluid host contract: TruffleContract .host 0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
+SuperTokenFactory address: 0x80E2E2367C5E9D070Ae2d6d50bF0cdF6360a7151
+ConstantFlowAgreementV1: TruffleContract .agreements.cfa | Helper .cfa 0x9bd03768a7DCc129555dE410FF8E85528A4F88b5
+InstantDistributionAgreementV1: TruffleContract .agreements.ida | Helper .ida 0x440C0fCDC317D69606eabc35C0F676D1a8251Ee1
+Superfluid Framework initialized.
+Underlying token symbol fDAI
+Underlying token address 0x59b670e9fA9D0A427751Af201D676719a970857b
+Underlying token address 0x59b670e9fA9D0A427751Af201D676719a970857b
+Underlying token info name() fDAI Fake Token
+Underlying token info symbol() fDAI
+Underlying token info decimals() 18
+SuperToken key at the resolver:  supertokens.test.fDAIx
+SuperToken address:  0x0000000000000000000000000000000000000000
+Creating the wrapper...
+Semi upgrdable super token fDAIx created at 0x1f65B7b9b3ADB4354fF76fD0582bB6b0d046a41c
+Wrapper created at 0x1f65B7b9b3ADB4354fF76fD0582bB6b0d046a41c
+Resolver setting new address...
+Resolver set done.
+Initializing Superfluid Framework...
+version test
+networkType private
+networkId 31337
+chainId 31337
+Using @superfluid-finance/js-sdk in a non-native Truffle environment.
+                Peer dependency @truffle/contract is required.
+Set default from address to the first account 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+Resolver at 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+Superfluid Loader v1 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+Loading framework with release version test
+Superfluid host contract: TruffleContract .host 0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
+SuperTokenFactory address: 0x80E2E2367C5E9D070Ae2d6d50bF0cdF6360a7151
+ConstantFlowAgreementV1: TruffleContract .agreements.cfa | Helper .cfa 0x9bd03768a7DCc129555dE410FF8E85528A4F88b5
+InstantDistributionAgreementV1: TruffleContract .agreements.ida | Helper .ida 0x440C0fCDC317D69606eabc35C0F676D1a8251Ee1
+fDAI: ERC20WithTokenInfo .tokens["fDAI"] 0x59b670e9fA9D0A427751Af201D676719a970857b
+fDAIx: ISuperToken .tokens["fDAIx"]  0x1f65B7b9b3ADB4354fF76fD0582bB6b0d046a41c
+Superfluid Framework initialized.
+Admin mints many dai: started
+Admin mints many dai: done, gas used 68514, gas price 2.536059541 Gwei
+Admin approves daix: started
+Admin approves daix: done, gas used 46302, gas price 2.531572687 Gwei
+Alice mints many dai: started
+Alice mints many dai: done, gas used 51414, gas price 2.527638284 Gwei
+Alice approves daix: started
+Alice approves daix: done, gas used 46302, gas price 2.524195341 Gwei
+Bob mints many dai: started
+Bob mints many dai: done, gas used 51402, gas price 2.52118026 Gwei
+Bob approves daix: started
+Bob approves daix: done, gas used 46302, gas price 2.518541801 Gwei
+Carol mints many dai: started
+Carol mints many dai: done, gas used 51414, gas price 2.516231231 Gwei
+Carol approves daix: started
+Carol approves daix: done, gas used 46302, gas price 2.514209282 Gwei
+Dan mints many dai: started
+Dan mints many dai: done, gas used 51414, gas price 2.512438605 Gwei
+Dan approves daix: started
+Dan approves daix: done, gas used 46302, gas price 2.510889109 Gwei
+Emma mints many dai: started
+Emma mints many dai: done, gas used 51414, gas price 2.509532172 Gwei
+Emma approves daix: started
+Emma approves daix: done, gas used 46302, gas price 2.508344735 Gwei
+Frank mints many dai: started
+Frank mints many dai: done, gas used 51414, gas price 2.507304863 Gwei
+Frank approves daix: started
+Frank approves daix: done, gas used 46302, gas price 2.506394885 Gwei
+0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+0xa513E6E4b8f2a923D98304ec87F64353C4D5C853
+0x9bd03768a7DCc129555dE410FF8E85528A4F88b5
+0x1f65B7b9b3ADB4354fF76fD0582bB6b0d046a41c
+Minting erc721
+Balance of  App
+DAIx:  0
+Alice upgrades many DAIx: started
+Alice upgrades many DAIx: done, gas used 121130, gas price 2.505025405 Gwei
+Balance of  Alice
+DAIx:  100000000000000000000000000
+Balance of  Alice
+DAIx:  100000000000000000000000000
+Balance of  Admin
+DAIx:  0
+Balance of  App
+DAIx:  0
+      1) Case #1 - Alice sends a flow with userData
+
+
+  0 passing (22s)
+  1 failing
+
+  1) Contract: TradableCashflow
+       Testing the billboard contract
+         Case #1 - Alice sends a flow with userData:
+     Error: VM Exception while processing transaction: reverted with reason string 'ERC721: owner query for nonexistent token'
+      at TradableCashflow.getApproved (@openzeppelin/contracts/token/ERC721/ERC721.sol:128)
+      at TradableCashflow.ownerOf (@openzeppelin/contracts/token/ERC721/ERC721.sol:70)
+      at TruffleContract.ownerOf (node_modules/@nomiclabs/truffle-contract/lib/execute.js:121:26)
+      at checkOwner (test/NFTBillboard.test.js:161:29)
+      at appStatus (test/NFTBillboard.test.js:157:11)
+      at processTicksAndRejections (internal/process/task_queues.js:95:5)
+      at Context.<anonymous> (test/NFTBillboard.test.js:191:7)
+
+
+
