@@ -4,6 +4,7 @@ pragma solidity ^0.8.4;
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 import {ISuperfluid, ISuperToken, ISuperApp} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
@@ -15,13 +16,16 @@ import { OptimisticRequester } from "@uma/core/contracts/oracle/implementation/O
 
 // Simple contract which allows users to create NFTs with attached streams
 
-contract BudgetNFT is ERC721, Ownable, OptimisticRequester {
+contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
+
     ISuperfluid private _host; // host
     IConstantFlowAgreementV1 private _cfa; // the stored constant flow agreement class address
 
     ISuperToken public _acceptedToken; // accepted token
+    int96 public globalFlowRate; // flow rate
 
     mapping(uint256 => int96) public flowRates;
+    mapping(address => uint256) public initialFlowContributor; 
 
     uint256 public nextId; // this is so we can increment the number (each stream has new id we store in flowRates)
 
@@ -34,6 +38,7 @@ contract BudgetNFT is ERC721, Ownable, OptimisticRequester {
     constructor(
         string memory _name,
         string memory _symbol,
+        int96 _flowRate,
         ISuperfluid host,
         IConstantFlowAgreementV1 cfa,
         ISuperToken acceptedToken
@@ -41,21 +46,34 @@ contract BudgetNFT is ERC721, Ownable, OptimisticRequester {
         _host = host;
         _cfa = cfa;
         _acceptedToken = acceptedToken;
-
+        globalFlowRate = _flowRate;
         nextId = 0;
 
         assert(address(_host) != address(0));
         assert(address(_cfa) != address(0));
         assert(address(_acceptedToken) != address(0));
-
     }
 
     event NFTIssued(uint256 tokenId, address receiver, int96 flowRate);
 
     // @dev creates the NFT, but it remains in the contract
-
     function issueNFT(address receiver, int96 flowRate) external onlyOwner {
         _issueNFT(receiver, flowRate);
+    }
+
+    // @dev flow rate settooor
+    function setGlobalFlowRate(int96 _flowRate) public onlyOwner {
+        globalFlowRate = _flowRate;
+    }
+
+    // @dev flow rate gettooor
+    function getFlowRate(address _address) public view returns (int96) {
+        return flowRates[initialFlowContributor[_address]];
+    }
+
+    // @dev creates the NFT, but it remains in the contract
+    function issueNFT(address receiver) external onlyOwner {
+        _issueNFT(receiver, globalFlowRate);
     }
 
     function _issueNFT(address receiver, int96 flowRate) internal {
@@ -63,6 +81,7 @@ contract BudgetNFT is ERC721, Ownable, OptimisticRequester {
         require(flowRate > 0, "flowRate must be positive!");
 
         flowRates[nextId] = flowRate;
+        initialFlowContributor[receiver] = nextId; 
         emit NFTIssued(nextId, receiver, flowRates[nextId]);
         _mint(receiver, nextId);
         nextId += 1;
@@ -101,8 +120,10 @@ contract BudgetNFT is ERC721, Ownable, OptimisticRequester {
         _reduceFlow(receiver, rate);
     }
 
+
     //now I will insert a hook in the _transfer, executing every time the token is moved
     //When the token is first "issued", i.e. moved from the first contract, it will start the stream
+    // TODO: revise whether we allow it to be trasferrable between EOAs. 
     function _beforeTokenTransfer(
         address oldReceiver,
         address newReceiver,
@@ -310,3 +331,4 @@ contract BudgetNFT is ERC721, Ownable, OptimisticRequester {
         );
     }
 }
+
