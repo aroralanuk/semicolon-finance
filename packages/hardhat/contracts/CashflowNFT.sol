@@ -34,6 +34,7 @@ contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
     uint256 private _oracleRequestTimestamp; // timestamp of the price being requested
     bytes private _ancillaryData; // ancillary data representing additional args being passed with the price request
     IERC20 private _oracleToken; // token being used for reward and fees
+    uint256 private _bondPrice; // price of the bond for proposal
 
     constructor(
         string memory _name,
@@ -214,6 +215,10 @@ contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
         _ancillaryData = ancillaryData;
     }
 
+    function setBondPrice(uint256 bondPrice) public {
+        _bondPrice = bondPrice;
+    }
+
     function requestOracle() public returns (bool) {
 
         _oracleRequestTimestamp = block.timestamp;
@@ -231,23 +236,31 @@ contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
             _priceIdentifier, 
             _oracleRequestTimestamp, 
             _ancillaryData,
-            0
+            _bondPrice
         );
 
         console.log(totalBond);
         return true;
     }
 
-    // TODO
-    function checkIfSettled() public returns (bool) {
-        uin256 bond = _oracle.settleAndGetPrice(
+    function getOracleResult() public returns (bool) {
+        uin256 resolvedbond = _oracle.settleAndGetPrice(
             _priceIdentifier, 
             _oracleRequestTimestamp, 
             _ancillaryData);
 
-        return true;
+        if (resolvedBond == _bondPrice) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
+    function updateFlowWithOracle(address to) public {
+        if (! getOracleResult()) {
+            _updateFlow(to, 0);
+        } 
+    }
 
     /**************************************************************************
      * Library
