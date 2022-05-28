@@ -16,6 +16,7 @@ contract CashflowNFT is ERC721, Ownable {
     IConstantFlowAgreementV1 private _cfa; // the stored constant flow agreement class address
 
     ISuperToken public _acceptedToken; // accepted token
+    int96 public globalFlowRate; // flow rate
 
     mapping(uint256 => int96) public flowRates;
 
@@ -24,6 +25,7 @@ contract CashflowNFT is ERC721, Ownable {
     constructor(
         string memory _name,
         string memory _symbol,
+        int96 _flowRate,
         ISuperfluid host,
         IConstantFlowAgreementV1 cfa,
         ISuperToken acceptedToken
@@ -31,6 +33,8 @@ contract CashflowNFT is ERC721, Ownable {
         _host = host;
         _cfa = cfa;
         _acceptedToken = acceptedToken;
+
+        globalFlowRate = _flowRate;
 
         nextId = 0;
 
@@ -41,10 +45,13 @@ contract CashflowNFT is ERC721, Ownable {
 
     event NFTIssued(uint256 tokenId, address receiver, int96 flowRate);
 
-    // @dev creates the NFT, but it remains in the contract
+    function setGlobalFlowRate(int96 _flowRate) public onlyOwner {
+        globalFlowRate = _flowRate;
+    }
 
-    function issueNFT(address receiver, int96 flowRate) external onlyOwner {
-        _issueNFT(receiver, flowRate);
+    // @dev creates the NFT, but it remains in the contract
+    function issueNFT(address receiver) external onlyOwner {
+        _issueNFT(receiver, globalFlowRate);
     }
 
     function _issueNFT(address receiver, int96 flowRate) internal {
