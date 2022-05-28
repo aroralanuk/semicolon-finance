@@ -19,7 +19,7 @@ contract CashflowNFT is ERC721, Ownable {
     int96 public globalFlowRate; // flow rate
 
     mapping(uint256 => int96) public flowRates;
-    // mapping(address => uint256) public initialFlowContributor; // Needed if we enable transfers 
+    mapping(address => uint256) public initialFlowContributor; 
 
     uint256 public nextId; // this is so we can increment the number (each stream has new id we store in flowRates)
 
@@ -50,6 +50,10 @@ contract CashflowNFT is ERC721, Ownable {
         globalFlowRate = _flowRate;
     }
 
+    function getFlowRate(address _address) public view returns (int96) {
+        return flowRates[initialFlowContributor[_address]];
+    }
+
     // @dev creates the NFT, but it remains in the contract
     function issueNFT(address receiver) external onlyOwner {
         _issueNFT(receiver, globalFlowRate);
@@ -60,7 +64,7 @@ contract CashflowNFT is ERC721, Ownable {
         require(flowRate > 0, "flowRate must be positive!");
 
         flowRates[nextId] = flowRate;
-        // initialFlowContributor[receiver] = nextId; // Needed if we enable transfers
+        initialFlowContributor[receiver] = nextId; 
         emit NFTIssued(nextId, receiver, flowRates[nextId]);
         _mint(receiver, nextId);
         nextId += 1;
