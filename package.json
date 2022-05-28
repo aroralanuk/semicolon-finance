@@ -1,5 +1,5 @@
 {
-  "name": "@scaffold-eth/monorepo",
+  "name": "@semifluid-finance/monorepo",
   "version": "1.0.0",
   "keywords": [
     "ethereum",
@@ -74,6 +74,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.5.0",
     "@superfluid-finance/ethereum-contracts": "^1.1.0",
+    "@uma/core": "^2.4.0",
     "ganache-cli": "^6.12.2",
     "yarn": "^1.22.15"
   }
