@@ -12,11 +12,16 @@ import {ISuperfluid, ISuperToken, ISuperApp} from "@superfluid-finance/ethereum-
 import {IConstantFlowAgreementV1} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementV1.sol";
 
 import { OptimisticOracleInterface } from "@uma/core/contracts/oracle/interfaces/OptimisticOracleInterface.sol";
+
+
+// TODO: use callbacks for priceSettled, priceDisputed, priceRevoked
 import { OptimisticRequester } from "@uma/core/contracts/oracle/implementation/OptimisticOracle.sol";
+
+import "hardhat/console.sol";
 
 // Simple contract which allows users to create NFTs with attached streams
 
-contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
+contract CashflowNFT is ERC721, Ownable {
 
     ISuperfluid private _host; // host
     IConstantFlowAgreementV1 private _cfa; // the stored constant flow agreement class address
@@ -197,9 +202,9 @@ contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
      * Oracle
      *************************************************************************/
 
-    // 0xAB75727d4e89A7f7F04f57C00234a35950527115
+    // 0xAB75727d4e89A7f7F04f57C00234a35950527115 - mumbai 
     function initOracle (address deployedAddress) public {
-        _oracle = OptimisticOracle(address(deployedAddress));
+        _oracle = OptimisticOracleInterface(address(deployedAddress));
     }
 
     function setPriceIdentifier(bytes32 identifier) public {
@@ -210,7 +215,7 @@ contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
         _priceIdentifier = bytes32(abi.encodePacked("YES_OR_NO_QUERY"));
     }
 
-    function setAncillaryData(bytes ancillaryData) public {
+    function setAncillaryData(bytes memory ancillaryData) public {
         _ancillaryData = ancillaryData;
     }
 
@@ -240,10 +245,10 @@ contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
 
     // TODO
     function checkIfSettled() public returns (bool) {
-        uin256 bond = _oracle.settleAndGetPrice(
+        uint256 bond = uint256(_oracle.settleAndGetPrice(
             _priceIdentifier, 
             _oracleRequestTimestamp, 
-            _ancillaryData);
+            _ancillaryData));
 
         return true;
     }
@@ -252,6 +257,7 @@ contract CashflowNFT is ERC721, Ownable, OptimisticRequester {
     /**************************************************************************
      * Library
      *************************************************************************/
+
     //this will reduce the flow or delete it
     function _reduceFlow(address to, int96 flowRate) internal {
         if (to == address(this)) return;
