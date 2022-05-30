@@ -57,7 +57,7 @@ contract GovernorContract is
   function getVotes(address account, uint256 blockNumber)
     public
     view
-    override(IGovernor, GovernorVotes)
+    override(Governor, IGovernor)
     returns (uint256)
   {
     return super.getVotes(account, blockNumber);

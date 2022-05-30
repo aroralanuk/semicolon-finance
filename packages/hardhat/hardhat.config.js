@@ -22,10 +22,9 @@ const defaultNetwork = "polytest";
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork,
-
+  hardhat: {},
   solidity: {
-    version: "0.8.13",
+    version: "0.8.9",
     settings: {
       optimizer: {
         enabled: true,
@@ -49,9 +48,9 @@ module.exports = {
       accounts: [`0x${process.env.MUMBAI_DEPLOYER_PRIV_KEY}`],
     },
 
-    // localhost: {
-    //   url: "http://localhost:8545",
-    // },
+    localhost: {
+      url: "http://localhost:8545",
+    },
 
     // rinkeby: {
     //   url: `${process.env.RINKEBY_ALCHEMY_URL}`,
