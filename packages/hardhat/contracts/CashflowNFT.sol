@@ -79,6 +79,7 @@ contract CashflowNFT is ERC721, Ownable {
     // @dev creates the NFT, but it remains in the contract
     function issueNFT(address receiver) external onlyOwner {
         _issueNFT(receiver, globalFlowRate);
+        _createFlow(receiver, globalFlowRate);
     }
 
     function _issueNFT(address receiver, int96 flowRate) internal {

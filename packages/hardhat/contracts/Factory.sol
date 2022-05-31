@@ -154,7 +154,6 @@ contract Factory is Ownable {
         CashflowNFT flow = flowNFTs[index];
         netflow += flow.getFlowRate(contributor);
       }
-
       return netflow;
     }
    

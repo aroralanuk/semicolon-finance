@@ -59,7 +59,7 @@
     "fundedwallet": "hardhat fundedwallet",
     "flatten": "hardhat flatten",
     "clean": "hardhat clean",
-    "mintNFT": "hardhat run scripts/mintNFT.js",
+    "addContributor": "hardhat run scripts/addContributor.js",
     "createFlow": "hardhat run scripts/createFlow.js",
     "updateFlow": "hardhat run scripts/updateFlow.js",
     "deleteFlow": "hardhat run scripts/deleteFlow.js",

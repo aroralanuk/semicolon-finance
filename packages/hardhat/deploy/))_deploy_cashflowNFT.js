@@ -54,7 +54,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     console.log(sf.agreements.cfa.address);
     console.log(sf.tokens.fDAIx.address);
 
-    await deploy("Factory", {
+    await deploy("CashflowNFT", {
       from: deployer,
       args: [
         sf.host.address,
@@ -64,11 +64,11 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
       log: true,
     });
   } else {
-    await deploy("Factory", {
+    await deploy("CashflowNFT", {
       from: deployer,
-      args: [host, cfa, fDAIx],
+      args: ["Rari Contributor Badge", "RCB", 1e15, host, cfa, fDAIx],
       log: true,
     });
   }
 };
-module.exports.tags = ["Factory"];
+module.exports.tags = ["CashflowNFT"];
