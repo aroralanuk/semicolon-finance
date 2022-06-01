@@ -29,6 +29,8 @@ const FactoryAddress = deployedFactory.address;
 
 // your address here:
 const sender = process.env.SENDER_ADDRESS;
+const bob = process.env.BOB_TEST_ADDRESS;
+const alice = process.env.ALICE_TEST_ADDRESS;
 
 // create a flow
 async function main() {
@@ -51,22 +53,62 @@ async function main() {
   // create flow by calling host directly in this function
   // create flow from sender to Tradable cashflow address
   // pass in userData to the flow as a parameter
-  async function createFlow(NFTname = "FWB badge", NFTsymbol = "FWB") {
-    const initCashflow = await Factory.methods.createFlow(
-      NFTname,
-      NFTsymbol,
-      1000
-    );
+  async function addContributor(contributor = bob, flowID = 0) {
+    const addContr = await Factory.methods.addContributor(contributor, flowID);
 
-    // cheating here - calling vs invoking function - need to fix this
-    const output = await Factory.methods
-      .createFlow(NFTname, NFTsymbol, 1000)
+    const netflow = await Factory.methods
+      .getContributorNetFlow(contributor)
       .call();
-
-    console.log("Creating cashflow: ", output);
+    console.log("netflow : ", netflow);
   }
 
-  await createFlow();
+  async function startFlow() {
+    const cfaTx = await cfa.methods
+      .createFlow(
+        fDAIx,
+        // sender,
+        CashflowNFTAddress,
+        "3858024691358",
+        "0x"
+      )
+      .encodeABI();
+
+    const txData = await host.methods
+      .callAgreement(cfaAddress, cfaTx, userData)
+      .encodeABI();
+
+    const tx = {
+      to: hostAddress,
+      gas: 3000000,
+      nonce,
+      data: txData,
+    };
+
+    const signedTx = await web3.eth.accounts.signTransaction(
+      tx,
+      process.env.MUMBAI_DEPLOYER_PRIV_KEY
+    );
+
+    await web3.eth.sendSignedTransaction(
+      signedTx.rawTransaction,
+      function (error, hash) {
+        if (!error) {
+          console.log(
+            "🎉 The hash of your transaction is: ",
+            hash,
+            "\n Check Alchemy's Mempool to view the status of your transaction!"
+          );
+        } else {
+          console.log(
+            "❗Something went wrong while submitting your transaction:",
+            error
+          );
+        }
+      }
+    );
+  }
+
+  await addContributor();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
