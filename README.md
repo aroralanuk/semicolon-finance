@@ -10,7 +10,7 @@ Made with [🏗 scaffold-eth](https://github.com/scaffold-eth/scaffold-eth)
 
 ## Techstack
 
-- Ploygon
+- Polygon
 - Superfluid
 - UMA
 - Coinbase Wallet
