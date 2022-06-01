@@ -4,38 +4,34 @@ pragma solidity ^0.8.4;
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 import {ISuperfluid, ISuperToken, ISuperApp} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 
 import {IConstantFlowAgreementV1} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IConstantFlowAgreementV1.sol";
 
-import { OptimisticOracleInterface } from "@uma/core/contracts/oracle/interfaces/OptimisticOracleInterface.sol";
-
+import {OptimisticOracleInterface} from "@uma/core/contracts/oracle/interfaces/OptimisticOracleInterface.sol";
 
 // TODO: use callbacks for priceSettled, priceDisputed, priceRevoked
-import { OptimisticRequester } from "@uma/core/contracts/oracle/implementation/OptimisticOracle.sol";
+import {OptimisticRequester} from "@uma/core/contracts/oracle/implementation/OptimisticOracle.sol";
 
 import "hardhat/console.sol";
 
 // Simple contract which allows users to create NFTs with attached streams
 
 contract CashflowNFT is ERC721, Ownable {
-
     ISuperfluid private _host; // host
     IConstantFlowAgreementV1 private _cfa; // the stored constant flow agreement class address
 
     ISuperToken public _acceptedToken; // accepted token
     int96 public globalFlowRate; // flow rate
 
-    mapping(uint256 => int96) public flowRates;
-    mapping(address => uint256) public initialFlowContributor; 
+    mapping(address => uint256) public initialFlowContributor;
 
     uint256 public nextId; // this is so we can increment the number (each stream has new id we store in flowRates)
 
     OptimisticOracleInterface _oracle;
-    bytes32 private _priceIdentifier;  // price identifier being requested
+    bytes32 private _priceIdentifier; // price identifier being requested
     uint256 private _oracleRequestTimestamp; // timestamp of the price being requested
     bytes private _ancillaryData; // ancillary data representing additional args being passed with the price request
     IERC20 private _oracleToken; // token being used for reward and fees
@@ -61,11 +57,6 @@ contract CashflowNFT is ERC721, Ownable {
 
     event NFTIssued(uint256 tokenId, address receiver, int96 flowRate);
 
-    // @dev creates the NFT, but it remains in the contract
-    function issueNFT(address receiver, int96 flowRate) external onlyOwner {
-        _issueNFT(receiver, flowRate);
-    }
-
     // @dev flow rate settooor
     function setGlobalFlowRate(int96 _flowRate) public onlyOwner {
         globalFlowRate = _flowRate;
@@ -73,7 +64,7 @@ contract CashflowNFT is ERC721, Ownable {
 
     // @dev flow rate gettooor
     function getFlowRate(address _address) public view returns (int96) {
-        return flowRates[initialFlowContributor[_address]];
+        return globalFlowRate;
     }
 
     // @dev creates the NFT, but it remains in the contract
@@ -81,13 +72,12 @@ contract CashflowNFT is ERC721, Ownable {
         _issueNFT(receiver, globalFlowRate);
     }
 
-    function _issueNFT(address receiver, int96 flowRate) internal {
+    function _issueNFT(address receiver) internal {
         require(receiver != address(this), "Issue to a new address");
         require(flowRate > 0, "flowRate must be positive!");
 
-        flowRates[nextId] = flowRate;
-        initialFlowContributor[receiver] = nextId; 
-        emit NFTIssued(nextId, receiver, flowRates[nextId]);
+        initialFlowContributor[receiver] = nextId;
+        emit NFTIssued(nextId, receiver, globalFlowRate);
         _mint(receiver, nextId);
         nextId += 1;
     }
@@ -115,20 +105,16 @@ contract CashflowNFT is ERC721, Ownable {
 
     function burnNFT(uint256 tokenId) external onlyOwner exists(tokenId) {
         address receiver = ownerOf(tokenId);
-
-        int96 rate = flowRates[tokenId];
-        delete flowRates[tokenId];
         _burn(tokenId);
         //deletes flow to previous holder of nft & receiver of stream after it is burned
 
         //we will reduce flow of owner of NFT by total flow rate that was being sent to owner of this token
-        _reduceFlow(receiver, rate);
+        _reduceFlow(receiver, globalFlowRate);
     }
-
 
     //now I will insert a hook in the _transfer, executing every time the token is moved
     //When the token is first "issued", i.e. moved from the first contract, it will start the stream
-    // TODO: revise whether we allow it to be trasferrable between EOAs. 
+    // TODO: revise whether we allow it to be trasferrable between EOAs.
     function _beforeTokenTransfer(
         address oldReceiver,
         address newReceiver,
@@ -143,10 +129,10 @@ contract CashflowNFT is ERC721, Ownable {
 
         // @dev delete flowRate of this token from old receiver
         // ignores minting case
-        _reduceFlow(oldReceiver, flowRates[tokenId]);
+        _reduceFlow(oldReceiver, globalFlowRate);
         // @dev create flowRate of this token to new receiver
         // ignores return-to-issuer case
-        _increaseFlow(newReceiver, flowRates[tokenId]);
+        _increaseFlow(newReceiver, globalFlowRate);
     }
 
     // Add a function that allows a token owner to split their token into two streams
@@ -202,8 +188,8 @@ contract CashflowNFT is ERC721, Ownable {
      * Oracle
      *************************************************************************/
 
-    // 0xAB75727d4e89A7f7F04f57C00234a35950527115 - mumbai 
-    function initOracle (address deployedAddress) public {
+    // 0xAB75727d4e89A7f7F04f57C00234a35950527115 - mumbai
+    function initOracle(address deployedAddress) public {
         _oracle = OptimisticOracleInterface(address(deployedAddress));
     }
 
@@ -220,7 +206,6 @@ contract CashflowNFT is ERC721, Ownable {
     }
 
     function requestOracle() public returns (bool) {
-
         _oracleRequestTimestamp = block.timestamp;
         // setting _reward to 0, proposer will get flow instead
         _oracle.requestPrice(
@@ -233,8 +218,8 @@ contract CashflowNFT is ERC721, Ownable {
 
         uint256 totalBond = _oracle.proposePrice(
             address(this),
-            _priceIdentifier, 
-            _oracleRequestTimestamp, 
+            _priceIdentifier,
+            _oracleRequestTimestamp,
             _ancillaryData,
             0
         );
@@ -245,14 +230,16 @@ contract CashflowNFT is ERC721, Ownable {
 
     // TODO
     function checkIfSettled() public returns (bool) {
-        uint256 bond = uint256(_oracle.settleAndGetPrice(
-            _priceIdentifier, 
-            _oracleRequestTimestamp, 
-            _ancillaryData));
+        uint256 bond = uint256(
+            _oracle.settleAndGetPrice(
+                _priceIdentifier,
+                _oracleRequestTimestamp,
+                _ancillaryData
+            )
+        );
 
         return true;
     }
-
 
     /**************************************************************************
      * Library
@@ -337,4 +324,3 @@ contract CashflowNFT is ERC721, Ownable {
         );
     }
 }
-
